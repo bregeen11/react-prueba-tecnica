@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Table, TableBody, TableRow, TableCell, TablePagination } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux';
+import { Table, TableBody, TableRow, TableCell, TablePagination, TextField } from '@mui/material';
+import { updateCliente, deleteCliente } from '../store/reducers/dataSlice';
 
 const TablaListado = () => {
-  const data = useSelector(state => state.data); // Obtén los datos del estado de Redux
+  const data = useSelector(state => state.data);
+  const dispatch = useDispatch();
 
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
@@ -29,21 +31,32 @@ const TablaListado = () => {
     }));
     setCurrentPage(0);
   };
-  console.log('Data:', data);
-  const filteredData = data.filter(item => {
-    return (
-      item.nombre.toLowerCase().includes(filters.keyword.toLowerCase()) &&
-      item.categoria.toLowerCase().includes(filters.category.toLowerCase())
-    );
-  });
+
+  const filteredData = Array.isArray(data)
+    ? data.filter(item => {
+        return (
+          item.nombre.toLowerCase().includes(filters.keyword.toLowerCase()) &&
+          item.categoria.toLowerCase().includes(filters.category.toLowerCase())
+        );
+      })
+    : [];
 
   const paginatedData = filteredData.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
+
+  const handleUpdateCliente = (event, clienteId) => {
+    const { name, value } = event.target;
+    dispatch(updateCliente({ id: clienteId, [name]: value }));
+  };
+
+  const handleDeleteCliente = (clienteId) => {
+    dispatch(deleteCliente(clienteId));
+  };
 
   return (
     <div>
       <div>
         <label htmlFor="keyword">Keyword:</label>
-        <input
+        <TextField
           type="text"
           id="keyword"
           name="keyword"
@@ -53,7 +66,7 @@ const TablaListado = () => {
       </div>
       <div>
         <label htmlFor="category">Category:</label>
-        <input
+        <TextField
           type="text"
           id="category"
           name="category"
@@ -65,8 +78,25 @@ const TablaListado = () => {
         <TableBody>
           {paginatedData.map(item => (
             <TableRow key={item.id}>
-              <TableCell>{item.nombre}</TableCell>
-              <TableCell>{item.categoria}</TableCell>
+              <TableCell>
+                <TextField
+                  type="text"
+                  name="nombre"
+                  value={item.nombre}
+                  onChange={(event) => handleUpdateCliente(event, item.id)}
+                />
+              </TableCell>
+              <TableCell>
+                <TextField
+                  type="text"
+                  name="categoria"
+                  value={item.categoria}
+                  onChange={(event) => handleUpdateCliente(event, item.id)}
+                />
+              </TableCell>
+              <TableCell>
+                <button onClick={() => handleDeleteCliente(item.id)}>Eliminar</button>
+              </TableCell>
               {/* Más celdas de datos */}
             </TableRow>
           ))}
@@ -85,4 +115,8 @@ const TablaListado = () => {
 };
 
 export default TablaListado;
+
+
+
+
 

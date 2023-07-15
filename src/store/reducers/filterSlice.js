@@ -1,4 +1,3 @@
-// src/store/reducers/filterSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -25,4 +24,5 @@ const filterSlice = createSlice({
 
 export const { setKeyword, setCategory, clearFilters } = filterSlice.actions;
 export const reducer = filterSlice.reducer;
+
 

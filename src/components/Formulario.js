@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { showNotification, hideNotification } from '../store/reducers/notificationSlice';
 import { Button, TextField, Snackbar } from '@mui/material';
+import { addCliente } from '../store/reducers/dataSlice';
 
 const Formulario = () => {
   const [nombre, setNombre] = useState('');
@@ -11,6 +12,9 @@ const Formulario = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Lógica para enviar el formulario
+
+    // Agregar el nuevo cliente
+    dispatch(addCliente({ nombre: nombre, categoria: 'Categoría ejemplo' }));
 
     // Mostrar notificación
     dispatch(showNotification('Formulario enviado correctamente'));
@@ -39,4 +43,6 @@ const Formulario = () => {
 };
 
 export default Formulario;
+
+
 

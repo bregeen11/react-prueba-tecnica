@@ -1,4 +1,3 @@
-// src/store/reducers/dataSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -8,16 +7,13 @@ const initialState = {
   totalItems: 0
 };
 
-console.log("hola mundo");
 const dataSlice = createSlice({
   name: 'data',
   initialState,
   reducers: {
     setData(state, action) {
-        console.log('Setting data:', action.payload);
-        state.data = action.payload;
-      },
-      
+      return { ...state, data: action.payload };
+    },
     clearData(state, action) {
       return initialState;
     },
@@ -29,11 +25,37 @@ const dataSlice = createSlice({
     },
     setTotalItems(state, action) {
       state.totalItems = action.payload;
+    },
+    addCliente(state, action) {
+      state.data.push(action.payload);
+    },
+    updateCliente(state, action) {
+      const { id, nombre, categoria } = action.payload;
+      const clienteIndex = state.data.findIndex(cliente => cliente.id === id);
+      if (clienteIndex !== -1) {
+        state.data[clienteIndex] = { ...state.data[clienteIndex], nombre, categoria };
+      }
+    },
+    deleteCliente(state, action) {
+      const clienteId = action.payload;
+      state.data = state.data.filter(cliente => cliente.id !== clienteId);
     }
   }
 });
 
-export const { setData, clearData, setCurrentPage, setPageSize, setTotalItems } = dataSlice.actions;
+export const {
+  setData,
+  clearData,
+  setCurrentPage,
+  setPageSize,
+  setTotalItems,
+  addCliente,
+  updateCliente,
+  deleteCliente
+} = dataSlice.actions;
 export const reducer = dataSlice.reducer;
+
+
+
 
 

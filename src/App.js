@@ -1,22 +1,10 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { reducer as notificationReducer } from './store/reducers/notificationSlice';
-import { reducer as filterReducer } from './store/reducers/filterSlice';
-import { reducer as dataReducer } from './store/reducers/dataSlice';
+import store from './store/store';
 import './App.css';
 import Formulario from './components/Formulario';
-import TablaListado from './components/TablaListado'
-
-const rootReducer = combineReducers({
-  notification: notificationReducer,
-  filter: filterReducer,
-  data: dataReducer
-});
-
-const store = configureStore({
-  reducer: rootReducer
-});
+import TablaListado from './components/TablaListado';
+import Notificaciones from './components/Notificaciones';
 
 const App = () => {
   return (
@@ -25,10 +13,13 @@ const App = () => {
         <h1>¡Bienvenido a mi aplicación!</h1>
         <Formulario />
         <TablaListado />
+        <Notificaciones />
       </div>
     </Provider>
   );
 };
 
 export default App;
+
+
 

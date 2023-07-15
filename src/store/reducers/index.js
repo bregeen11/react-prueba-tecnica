@@ -1,4 +1,3 @@
-// src/store/reducers/index.js
 import { combineReducers } from '@reduxjs/toolkit';
 import { reducer as notificationReducer } from './notificationSlice';
 import { reducer as filterReducer } from './filterSlice';
@@ -11,3 +10,4 @@ const rootReducer = combineReducers({
 });
 
 export default rootReducer;
+
