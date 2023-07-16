@@ -16,13 +16,14 @@ const filterSlice = createSlice({
       state.category = action.payload;
     },
     clearFilters(state, action) {
-      state.keyword = '';
-      state.category = '';
+      // Reiniciar el estado a initialState
+      return initialState;
     }
   }
 });
 
 export const { setKeyword, setCategory, clearFilters } = filterSlice.actions;
 export const reducer = filterSlice.reducer;
+
 
 

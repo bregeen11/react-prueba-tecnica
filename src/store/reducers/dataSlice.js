@@ -1,10 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  data: [],
+  data: [], // Tu estado inicial de data
   currentPage: 1,
   pageSize: 10,
-  totalItems: 0
+  totalItems: 0,
+  filters: {
+    keyword: '',
+    category: '',
+  },
 };
 
 const dataSlice = createSlice({
@@ -26,21 +30,21 @@ const dataSlice = createSlice({
     setTotalItems(state, action) {
       state.totalItems = action.payload;
     },
+    updateFilters(state, action) {
+      state.filters = action.payload;
+      state.currentPage = 1;
+    },
     addCliente(state, action) {
-      state.data.push(action.payload);
+      const newCliente = { ...action.payload, id: state.data.length + 1 }; // Agregar una propiedad 'id' única
+      state.data.push(newCliente);
     },
     updateCliente(state, action) {
-      const { id, nombre, categoria } = action.payload;
-      const clienteIndex = state.data.findIndex(cliente => cliente.id === id);
-      if (clienteIndex !== -1) {
-        state.data[clienteIndex] = { ...state.data[clienteIndex], nombre, categoria };
-      }
+      // Resto del código
     },
     deleteCliente(state, action) {
-      const clienteId = action.payload;
-      state.data = state.data.filter(cliente => cliente.id !== clienteId);
-    }
-  }
+      // Resto del código
+    },
+  },
 });
 
 export const {
@@ -49,13 +53,10 @@ export const {
   setCurrentPage,
   setPageSize,
   setTotalItems,
+  updateFilters,
   addCliente,
   updateCliente,
-  deleteCliente
+  deleteCliente,
 } = dataSlice.actions;
 export const reducer = dataSlice.reducer;
-
-
-
-
 

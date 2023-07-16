@@ -62,6 +62,8 @@ const TablaListado = () => {
           name="keyword"
           value={filters.keyword}
           onChange={handleFilterChange}
+          fullWidth  // Agrega esta propiedad para que el TextField ocupe todo el ancho disponible
+          margin="normal"  // Ajusta el margen del TextField
         />
       </div>
       <div>
@@ -72,6 +74,8 @@ const TablaListado = () => {
           name="category"
           value={filters.category}
           onChange={handleFilterChange}
+          fullWidth  // Agrega esta propiedad para que el TextField ocupe todo el ancho disponible
+          margin="normal"  // Ajusta el margen del TextField
         />
       </div>
       <Table>
@@ -84,6 +88,8 @@ const TablaListado = () => {
                   name="nombre"
                   value={item.nombre}
                   onChange={(event) => handleUpdateCliente(event, item.id)}
+                  fullWidth  // Agrega esta propiedad para que el TextField ocupe todo el ancho disponible
+                  margin="none"  // Elimina el margen del TextField
                 />
               </TableCell>
               <TableCell>
@@ -92,6 +98,8 @@ const TablaListado = () => {
                   name="categoria"
                   value={item.categoria}
                   onChange={(event) => handleUpdateCliente(event, item.id)}
+                  fullWidth  // Agrega esta propiedad para que el TextField ocupe todo el ancho disponible
+                  margin="none"  // Elimina el margen del TextField
                 />
               </TableCell>
               <TableCell>

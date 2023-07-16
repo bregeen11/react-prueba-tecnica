@@ -14,12 +14,19 @@ const notificationSlice = createSlice({
     },
     clearNotification(state, action) {
       return null;
-    }
+    },
+    clientDeleted(state, action) {
+      return 'Cliente eliminado correctamente'; // Mensaje predeterminado para notificación de cliente eliminado
+    },
   }
 });
 
-export const { showNotification, hideNotification, clearNotification } = notificationSlice.actions;
+export const {
+  showNotification,
+  hideNotification,
+  clearNotification,
+  clientDeleted, // Agregamos la nueva acción para notificar cuando un cliente es eliminado
+} = notificationSlice.actions;
 export const reducer = notificationSlice.reducer;
-
 
 
