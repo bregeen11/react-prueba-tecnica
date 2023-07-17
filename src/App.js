@@ -1,18 +1,25 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import store from './store/store';
-import './App.css';
-import Formulario from './components/Formulario';
-import TablaDataGrid from './components/TablaDataGrid';  // Importa el componente TablaDataGrid en lugar de TablaListado
-import Notificaciones from './components/Notificaciones';
+import React, { useState } from "react";
+import { Provider } from "react-redux";
+import store from "./store/store";
+import "./App.css";
+import Formulario from "./components/Formulario";
+import TablaDataGrid from "./components/TablaDataGrid";
+import Notificaciones from "./components/Notificaciones";
 
 const App = () => {
+  const [showForm, setShowForm] = useState(false);
+
   return (
     <Provider store={store}>
-      <div>
+      <div className="app-container">
         <h1>¡Bienvenido a mi aplicación!</h1>
-        <Formulario />
-        <TablaDataGrid />  {/* Utiliza el componente TablaDataGrid en lugar de TablaListado */}
+        <button
+          className="custom-button custom-button-primary"
+          onClick={() => setShowForm(!showForm)}
+        >
+          {showForm ? "Mostrar Tabla" : "Mostrar Formulario"}
+        </button>
+        {showForm ? <Formulario /> : <TablaDataGrid />}
         <Notificaciones />
       </div>
     </Provider>
@@ -20,6 +27,3 @@ const App = () => {
 };
 
 export default App;
-
-
-

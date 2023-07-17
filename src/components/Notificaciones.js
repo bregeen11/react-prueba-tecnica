@@ -1,20 +1,16 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Snackbar } from '@mui/material';
+import React from "react";
+import { useSelector } from "react-redux";
+import { Snackbar } from "@mui/material";
 
 const Notificaciones = () => {
   const notification = useSelector((state) => state.notification);
 
-  const handleSnackbarClose = () => {
-    // Ocultar la notificación
-  };
-
   return (
     <Snackbar
-      open={!!notification}
+      open={!!notification?.message}
       autoHideDuration={3000}
-      onClose={handleSnackbarClose}
-      message={notification?.message || ''} // Accedemos al mensaje de notificación
+      onClose={() => {}}
+      message={notification?.message || ""}
     />
   );
 };

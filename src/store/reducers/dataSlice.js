@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+import { notifyClientDeleted } from "./notificationSlice";
 
 const initialState = {
   data: [],
@@ -6,14 +7,14 @@ const initialState = {
   pageSize: 10,
   totalItems: 0,
   filters: {
-    keyword: '',
-    category: '',
+    keyword: "",
+    category: "",
   },
-  selectedCliente: null, // Agregamos el estado para el cliente seleccionado
+  selectedCliente: null,
 };
 
 const dataSlice = createSlice({
-  name: 'data',
+  name: "data",
   initialState,
   reducers: {
     setData(state, action) {
@@ -41,7 +42,9 @@ const dataSlice = createSlice({
     },
     updateCliente(state, action) {
       const updatedCliente = action.payload;
-      const index = state.data.findIndex((cliente) => cliente.id === updatedCliente.id);
+      const index = state.data.findIndex(
+        (cliente) => cliente.id === updatedCliente.id
+      );
       if (index !== -1) {
         state.data[index] = updatedCliente;
       }
@@ -50,7 +53,6 @@ const dataSlice = createSlice({
       const clienteId = action.payload;
       state.data = state.data.filter((cliente) => cliente.id !== clienteId);
     },
-    // Nueva acción para establecer el cliente seleccionado
     setSelectedCliente(state, action) {
       state.selectedCliente = action.payload;
     },
@@ -67,7 +69,9 @@ export const {
   addCliente,
   updateCliente,
   deleteCliente,
-  setSelectedCliente, // No olvides incluir la nueva acción en la exportación
+  setSelectedCliente,
 } = dataSlice.actions;
+
+export { notifyClientDeleted };
 
 export const reducer = dataSlice.reducer;
