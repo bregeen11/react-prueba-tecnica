@@ -15,18 +15,18 @@ const notificationSlice = createSlice({
     clearNotification(state, action) {
       return null;
     },
-    clientDeleted(state, action) {
-      return 'Cliente eliminado correctamente'; // Mensaje predeterminado para notificación de cliente eliminado
-    },
-  }
+  },
 });
 
-export const {
-  showNotification,
-  hideNotification,
-  clearNotification,
-  clientDeleted, // Agregamos la nueva acción para notificar cuando un cliente es eliminado
-} = notificationSlice.actions;
-export const reducer = notificationSlice.reducer;
+export const { showNotification, hideNotification, clearNotification } =
+  notificationSlice.actions;
 
+// Nuevas acciones para notificar cuando un cliente es eliminado o actualizado
+export const clientDeleted = 'CLIENT_DELETED';
+export const clientUpdated = 'CLIENT_UPDATED';
+
+export const notifyClientDeleted = 'Cliente eliminado correctamente';
+export const notifyClientUpdated = 'Cliente actualizado correctamente';
+
+export const reducer = notificationSlice.reducer;
 

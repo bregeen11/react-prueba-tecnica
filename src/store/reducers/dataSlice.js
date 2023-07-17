@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  data: [], // Tu estado inicial de data
+  data: [],
   currentPage: 1,
   pageSize: 10,
   totalItems: 0,
@@ -9,6 +9,7 @@ const initialState = {
     keyword: '',
     category: '',
   },
+  selectedCliente: null, // Agregamos el estado para el cliente seleccionado
 };
 
 const dataSlice = createSlice({
@@ -35,14 +36,23 @@ const dataSlice = createSlice({
       state.currentPage = 1;
     },
     addCliente(state, action) {
-      const newCliente = { ...action.payload, id: state.data.length + 1 }; // Agregar una propiedad 'id' única
+      const newCliente = { ...action.payload, id: state.data.length + 1 };
       state.data.push(newCliente);
     },
     updateCliente(state, action) {
-      // Resto del código
+      const updatedCliente = action.payload;
+      const index = state.data.findIndex((cliente) => cliente.id === updatedCliente.id);
+      if (index !== -1) {
+        state.data[index] = updatedCliente;
+      }
     },
     deleteCliente(state, action) {
-      // Resto del código
+      const clienteId = action.payload;
+      state.data = state.data.filter((cliente) => cliente.id !== clienteId);
+    },
+    // Nueva acción para establecer el cliente seleccionado
+    setSelectedCliente(state, action) {
+      state.selectedCliente = action.payload;
     },
   },
 });
@@ -57,6 +67,7 @@ export const {
   addCliente,
   updateCliente,
   deleteCliente,
+  setSelectedCliente, // No olvides incluir la nueva acción en la exportación
 } = dataSlice.actions;
-export const reducer = dataSlice.reducer;
 
+export const reducer = dataSlice.reducer;

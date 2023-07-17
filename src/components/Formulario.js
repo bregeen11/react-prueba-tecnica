@@ -1,40 +1,80 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { showNotification, hideNotification } from '../store/reducers/notificationSlice';
+import { showNotification, hideNotification, notifyClientUpdated, clientUpdated } from '../store/reducers/notificationSlice';
 import { Button, TextField, Select, MenuItem, Snackbar, RadioGroup, FormControlLabel, Radio, Checkbox, Slider } from '@mui/material';
-import { addCliente } from '../store/reducers/dataSlice';
+import { addCliente, updateCliente, setSelectedCliente } from '../store/reducers/dataSlice'; // Importar las acciones addCliente, updateCliente y setSelectedCliente desde dataSlice
 import { clearFilters } from '../store/reducers/filterSlice';
 
+
 const Formulario = () => {
+  const dispatch = useDispatch();
+  const selectedCliente = useSelector((state) => state.data.selectedCliente);
+  const notification = useSelector((state) => state.notification);
+
   const [nombre, setNombre] = useState('');
   const [categoria, setCategoria] = useState('');
-  const [edad, setEdad] = useState(18); // Valor inicial de la edad
+  const [edad, setEdad] = useState(18);
   const [genero, setGenero] = useState('');
   const [aceptaTerminos, setAceptaTerminos] = useState(false);
 
-  const dispatch = useDispatch();
-  const notification = useSelector(state => state.notification);
+  useEffect(() => {
+    // Cargar los datos del cliente seleccionado en el formulario cuando se seleccione
+    if (selectedCliente) {
+      setNombre(selectedCliente.nombre);
+      setCategoria(selectedCliente.categoria);
+      setEdad(selectedCliente.edad);
+      setGenero(selectedCliente.genero);
+      setAceptaTerminos(selectedCliente.aceptaTerminos);
+    } else {
+      // Limpiar los campos del formulario si no hay cliente seleccionado
+      setNombre('');
+      setCategoria('');
+      setEdad(18);
+      setGenero('');
+      setAceptaTerminos(false);
+    }
+  }, [selectedCliente]);
 
-  const handleSubmit = (event) => {
+  const loadSelectedClienteData = () => {
+    if (selectedCliente) {
+      setNombre(selectedCliente.nombre);
+      setCategoria(selectedCliente.categoria);
+      setEdad(selectedCliente.edad);
+      setGenero(selectedCliente.genero);
+      setAceptaTerminos(selectedCliente.aceptaTerminos);
+      dispatch(showNotification('Cliente seleccionado para edición'));
+    }
+  };
+
+  const handleSubmitForm = (event) => {
     event.preventDefault();
-    console.log('Formulario renderizado');
-    // Lógica para enviar el formulario
-
-    // Agregar el nuevo cliente con los nuevos campos
-    dispatch(addCliente({ nombre, categoria, edad, genero, correo: '' }));
-
-    // Limpiar filtros
+    if (selectedCliente) {
+      dispatch(updateCliente({
+        ...selectedCliente,
+        nombre,
+        categoria,
+        edad,
+        genero,
+        aceptaTerminos
+      }));
+      dispatch(showNotification(notifyClientUpdated));
+    } else {
+      dispatch(addCliente({
+        nombre,
+        categoria,
+        edad,
+        genero,
+        aceptaTerminos
+      }));
+      dispatch(showNotification('Formulario enviado correctamente'));
+    }
     dispatch(clearFilters());
-
-    // Mostrar notificación
-    dispatch(showNotification('Formulario enviado correctamente'));
-
-    // Limpiar los campos del formulario después de mostrar la notificación
     setNombre('');
     setCategoria('');
     setEdad(18);
     setGenero('');
     setAceptaTerminos(false);
+    setSelectedCliente(null); // Limpiar el cliente seleccionado después de enviar el formulario
   };
 
   const handleSnackbarClose = () => {
@@ -43,7 +83,7 @@ const Formulario = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmitForm}>
         <TextField
           label="Nombre"
           value={nombre}
@@ -91,20 +131,14 @@ const Formulario = () => {
           label="Acepto los términos y condiciones"
         />
         <Button type="submit" variant="contained" color="primary">
-          Enviar formulario
+          {selectedCliente ? 'Actualizar Cliente' : 'Enviar formulario'}
         </Button>
       </form>
-      <Snackbar open={!!notification} autoHideDuration={3000} onClose={handleSnackbarClose} message={notification} />
+      <Snackbar open={!!notification} autoHideDuration={3000} onClose={handleSnackbarClose} message={notification?.message || ''} />
     </div>
   );
 };
 
 export default Formulario;
-
-
-
-
-
-
 
 
